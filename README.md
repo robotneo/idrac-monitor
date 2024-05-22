@@ -12,7 +12,7 @@
 
 SNMP 协议实现方案链接：[使用教程](snmp/README.md)
 
-**Grafana Dashboard ID:  ![21107](https://grafana.com/grafana/dashboards/21107)**
+**Grafana Dashboard ID:  [`21107`](https://grafana.com/grafana/dashboards/21107)**
 
 ## Redfish
 
