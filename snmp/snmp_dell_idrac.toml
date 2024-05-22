@@ -12,20 +12,19 @@ agents = [
 interval_times = 1
 labels = { region = "hangzhou", role = "idrac", brand = "dell" }
 
-# 每个请求的超时时间
+# 每个agent请求的超时时间
 timeout = "5s"
 # SNMP Agent的版本
 version = 2
 # SNMP团体名
 community = "public"
-# mib库文件路径 要在使用 netsnmp 进行转换时添加路径，请使用 MIBDIRS 环境变量
+# 把戴尔的 mib 文件放入 /opt/categraf/mibs/dell 目录中
 path = ["/opt/categraf/mibs/dell"]
 translator = "gosmi"
 # 代理主机标签
 agent_host_tag = "device_ip"
-# 尝试的重试次数
+# 每个agent重试次数
 retries = 3
-# GETBULK 每次获取的最大对象数 根据实际设备性能
 max_repetitions = 15
 
 # iDRAC版本 racShortName
