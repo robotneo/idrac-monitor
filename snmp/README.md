@@ -37,9 +37,18 @@ Grafana Dashboard ID: 12106
 
 把需要监控的主机 **`iDRAC`** 中的 **`SNMP v2`** 打开，安装并设置 **`Categraf + VictoriaMetrics + Grafana`** 以相互配合。
 
-使用提供的 **`snmp_dell_idrac.toml`** 文件放置在 **`/opt/categraf/conf/inputs.snmp/`** 文件夹中，并在 **`agents`** 下编辑 iDRAC IP 或主机名替换 "iDRACURLx" 的值。
+使用提供的 **`snmp_dell_idrac.toml`** 文件放置在 **`/opt/categraf/conf/inputs.snmp/`** 文件夹中，并在 **`agents`** 下编辑您的物理机 **`iDRAC IP`** 或主机名替换 **`iDRACURLx`** 的值，如下所示：
 
-重新启动 **`Categraf`** 。然后，导入仪表板 json 文件（或使用 Grafana 仪表板 ID），将仪表板和面板添加到 **`Grafana`** 中，在单击 "导入" 后选择您自己的 **`VictoriaMetrics`** 数据库。面板中数据填充最多 2 分钟就可以完全看到。
+```toml
+[[instances]]
+agents = [
+    "udp://192.168.100.100:161",
+    "udp://192.168.100.101:161",
+    "udp://192.168.100.102:161"
+]
+```
+
+重新启动 **`Categraf`** ，然后导入仪表板 **`Dell iDRAC SNMP Dashboard for VectoriaMetrics.json`** 文件（或使用 **`Grafana`** 仪表板 ID），将仪表板添加到 **`Grafana`** 中，在单击 "导入" 后选择您自己的 **`VictoriaMetrics`** 数据库或者 **`Prometheus`** 数据库，面板中数据填充最多 2 分钟就可以完全看到。
 
 ### 前置要求
 
@@ -77,3 +86,9 @@ Grafana Dashboard ID: 12106
 ### 已知问题
 
 - 暂未发现
+
+### 更多信息
+
+如果需要了解关于监控的更多信息，还请关注公众号：网络小斐，下面是公众号二维码。
+
+![alt text](img/qrcode.jpg)
