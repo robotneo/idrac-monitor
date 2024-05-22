@@ -10,6 +10,7 @@ agents = [
 # metrics_name_prefix = "dell_"
 
 interval_times = 1
+# 标签可自定义标签值
 labels = { region = "hangzhou", role = "idrac", brand = "dell" }
 
 # 每个agent请求的超时时间
