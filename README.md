@@ -22,7 +22,9 @@ SNMP 协议实现方案链接：[使用教程](snmp/README.md)
 
 需要使用 **`idrac_exporter`** 请点击跳转到：[idrac_exporter](https://github.com/mrlhansen/idrac_exporter)
 
-Redfish 协议实现链接：[使用教程](redfish/README.md)
+Redfish 协议实现方案链接：[使用教程](redfish/README.md)
+
+**Grafana Dashboard ID: `待更新`**
 
 ## 更多信息
 
