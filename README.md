@@ -10,7 +10,9 @@
 
 以 **`Categraf`** 中 **`SNMP`** 插件作为采集器，物理机开启 **`SNMP`** 服务（出厂默认开启），以 **`SNMP v2c`** 版本为例，如果需要使用 **`SNMP v3`** 版本，可以自定义修改认证参数即可。
 
-SNMP 协议实现链接：[使用教程](snmp/README.md)
+SNMP 协议实现方案链接：[使用教程](snmp/README.md)
+
+> Grafana Dashboard ID:  **`![21107](https://grafana.com/grafana/dashboards/21107)`**
 
 ## Redfish
 
