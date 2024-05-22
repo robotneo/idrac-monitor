@@ -6,12 +6,12 @@ Grafana Dashboard ID: 12106
 
 面板详细：
 
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
+![alt text](img/image.png)
+![alt text](img/image-1.png)
+![alt text](img/image-2.png)
+![alt text](img/image-3.png)
 
-更多面板信息请套用后反馈一些意见。
+👉👉👉更多面板信息请套用后反馈一些意见。
 
 ### 当前特性
 - 添加一个全局系统信息行，系统信息行中通过模版变量显示当前采集物理机的总数
