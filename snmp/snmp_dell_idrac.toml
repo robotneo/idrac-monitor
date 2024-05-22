@@ -1,0 +1,1134 @@
+interval = 30
+
+[[instances]]
+agents = [
+    "udp://iDRACURL1:161",
+    "udp://iDRACURL2:161",
+    "udp://iDRACURL3:161"
+]
+
+# metrics_name_prefix = "dell_"
+
+interval_times = 1
+labels = { region = "hangzhou", role = "idrac", brand = "dell" }
+
+# 每个请求的超时时间
+timeout = "5s"
+# SNMP Agent的版本
+version = 2
+# SNMP团体名
+community = "public"
+# mib库文件路径 要在使用 netsnmp 进行转换时添加路径，请使用 MIBDIRS 环境变量
+path = ["/opt/categraf/mibs/dell"]
+translator = "gosmi"
+# 代理主机标签
+agent_host_tag = "device_ip"
+# 尝试的重试次数
+retries = 3
+# GETBULK 每次获取的最大对象数 根据实际设备性能
+max_repetitions = 15
+
+# iDRAC版本 racShortName
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.1.2.0"
+name = "dell_idrac_shortname"
+is_tag = true
+
+# iDRAC固件版本 racFirmwareVersion
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.1.5.0"
+name = "dell_idrac_firmware"
+is_tag = true
+
+# iDRAC界面的URL
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.1.6.0"
+name = "dell_idrac_url"
+is_tag = true
+
+# # 设备名称 iDRAC-系统服务标签
+# [[instances.field]]
+# oid = ".1.3.6.1.2.1.1.5.0"
+# name = "system_name"
+# is_tag = true
+
+# 服务标签
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.3.2.0"
+name = "dell_service_tag"
+is_tag = true
+
+# 快速服务代码
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.3.3.0"
+name = "dell_express_service_code"
+is_tag = true
+
+# 操作系统名称
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.3.6.0"
+name = "dell_os_name"
+is_tag = true
+
+# 型号名称
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.3.12.0"
+name = "dell_model_name"
+is_tag = true
+
+# 操作系统版本
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.3.14.0"
+name = "dell_os_version"
+is_tag = true
+
+# 系统的唯一标识符或ID
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.1.3.13.0"
+name = "dell_system_id"
+
+# 设备全局系统状态 globalSystemStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.2.1.0"
+name = "dell_glob_system_status"
+
+# 设备LCD状态 systemLCDStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.2.2.0"
+name = "dell_system_lcd_status"
+
+# 设备全局存储状态 globalStorageStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.2.3.0"
+name = "dell_global_storage_status"
+
+# 设备系统电源状态 systemPowerState
+# PowerStateStatusEnum (INTEGER) 
+# {other(1), unknown(2), off(3), on(4) }
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.2.4.0"
+name = "dell_system_power_state"
+
+# 设备系统电源在线时长 systemPowerUpTime 单位秒
+# Unsigned32BitRange (INTEGER) 
+# (0..2147483647)
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.2.5.0"
+name = "dell_system_power_uptime"
+
+# 事件日志中的条目数 numEventLogEntries
+#  Unsigned32BitRange (INTEGER) 
+# (0..2147483647) 
+[[instances.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.1.0"
+name = "dell_num_event_log"
+
+# BIOS状态 systemBIOSTableEntry
+[[instances.table]]
+name = "dell"
+# systemBIOSchassisIndex, systemBIOSIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# BIOS版本信息 systemBIOSVersionName
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.50.1.8"
+name = "bios_version"
+is_tag = true
+
+# BIOS状态设置 systemBIOSStateSettings
+#  StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.50.1.4"
+name = "bios_state"
+is_tag = true
+
+# BIOS状态 systemBIOSStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.50.1.5"
+name = "bios_status"
+
+# 固件表 firmwareTableEntry
+[[instances.table]]
+name = "dell"
+# firmwarechassisIndex, firmwareIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 固件状态设置 firmwareStateSettings
+# StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.60.1.4"
+name = "firmware_state"
+is_tag = true
+
+# 固件状态 firmwareStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.60.1.5"
+name = "firmware_status"
+
+# 固件类型名称 firmwareTypeName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.60.1.8"
+name = "firmware_type_name"
+is_tag = true
+
+# 固件版本 firmwareVersionName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.60.1.11"
+name = "firmware_version_name"
+is_tag = true
+
+# 侵入表条目 intrusionTableEntry
+[[instances.table]]
+name = "dell"
+# powerSupplychassisIndex, powerSupplyIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 侵入设备状态设置 intrusionStateSettings
+# StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.70.1.4"
+name = "intrusion_state"
+is_tag = true
+
+# 侵入设备状态 intrusionStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.70.1.5"
+name = "intrusion_status"
+
+# 入侵位置名称 intrusionLocationName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.300.70.1.8"
+name = "intrusion_location_name"
+is_tag = true
+
+# 电源供应表条目 powerSupplyTableEntry
+[[instances.table]]
+name = "dell"
+# intrusionchassisIndex, intrusionIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 电源实体状态设置 powerSupplyStateSettingsUnique
+# PowerSupplyStateSettingsUniqueFlags (INTEGER) {unknown(1), onLine(2), notReady(4), fanFailure(8), onlineAndFanFailure(10),
+# powerSupplyIsON(16), powerSupplyIsOK(32), acSwitchIsON(64), onlineandAcSwitchIsON(66),
+# acPowerIsON(128), onlineAndAcPowerIsON(130),
+# onlineAndPredictiveFailure(210),
+# acPowerAndSwitchAreOnPowerSupplyIsOnIsOkAndOnline(242)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.12.1.4"
+name = "power_state"
+is_tag = true
+
+# 电源实体状态 powerSupplyStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.12.1.5"
+name = "power_status"
+
+# 电源实体最大持续输出功率 powerSupplyOutputWatts 以十分之一瓦特为单位
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.12.1.6"
+name = "power_output_watts"
+is_tag = true
+
+# 电源实体额定输入功率 powerSupplyRatedInputWattage 以十分之一瓦特为单位
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.12.1.14"
+name = "power_input_watts"
+is_tag = true
+
+# 电源实体名称 powerSupplyLocationName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.12.1.8"
+name = "power_location_name"
+is_tag = true
+
+# 电源实体完全合格设备描述符 powerSupplyFQDD
+# String64 (OCTET STRING) (SIZE (0..512))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.12.1.15"
+name = "power_fqdd"
+is_tag = true
+
+# 电源实体最大输入电压 powerSupplyMaximumInputVoltage 以伏特为单位
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.12.1.9"
+name = "power_max_inputvlo"
+
+# 电源实体当前输入电压 powerSupplyCurrentInputVoltage 以伏特为单位
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.12.1.16"
+name = "power_current_inputvlo"
+
+# 电流探头条目表 amperageProbeTableEntry
+[[instances.table]]
+name = "dell"
+# amperageProbechassisIndex, amperageProbeIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+filters = ["exprA:amperage_probe_type:^24|26$", "exprB:amperage_reading:.*"]
+filters_expression = "exprA && exprB"
+
+# 电流探头状态功能 amperageProbeStateCapabilities
+# StateCapabilitiesFlags (INTEGER) {unknownCapabilities(1), enableCapable(2), 
+# notReadyCapable(4), enableAndNotReadyCapable(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.30.1.3"
+name = "amperage_capab_state"
+is_tag = true
+
+# 电流探头状态设置 amperageProbeStateSettings
+# StateSettingsFlags (INTEGER) {unknown(1), enabled(2), notReady(4), 
+# enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.30.1.4"
+name = "amperage_setting_state"
+is_tag = true
+
+# 电流探头实体状态 amperageProbeStatus
+# StatusProbeEnum (INTEGER) {other(1), unknown(2), ok(3), nonCriticalUpper(4), 
+# criticalUpper(5), nonRecoverableUpper(6), nonCriticalLower(7), 
+# criticalLower(8), nonRecoverableLower(9), failed(10) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.30.1.5"
+name = "amperage_probe_status"
+is_tag = true
+
+# 电流探头探测的实际功率 amperageProbeReading 单位瓦特
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.30.1.6"
+name = "amperage_reading"
+
+# 电流探头类型 amperageProbeType
+# AmperageProbeTypeEnum (INTEGER)
+# amperageProbeTypeIsPowerSupplyWatts 24
+# amperageProbeTypeIsSystemWatts 26
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.30.1.7"
+name = "amperage_probe_type"
+is_tag = true
+
+# 电流探头名称 amperageProbeLocationName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.30.1.8"
+name = "power_location_name"
+is_tag = true
+
+# 系统电池表项 systemBatteryTableEntry
+[[instances.table]]
+name = "dell"
+# systemBatteryChassisIndex, systemBatteryIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 系统电池状态设置 systemBatteryStateSettings
+# StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.50.1.4"
+name = "battery_state"
+is_tag = true
+
+# 系统电池状态 systemBatteryStatus
+#  ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.50.1.5"
+name = "battery_status"
+
+# 电池的位置名称 systemBatteryLocationName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.600.50.1.7"
+name = "battery_location_name"
+is_tag = true
+
+# 风扇设备条目表 coolingDeviceTableEntry
+[[instances.table]]
+name = "dell"
+# coolingDevicechassisIndex, coolingDeviceIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 风扇状态设置 coolingDeviceStateSettings
+# StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.12.1.4"
+name = "cooling_device_state"
+is_tag = true
+
+# 风扇状态 coolingDeviceStatus
+# StatusProbeEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCriticalUpper(4), criticalUpper(5), nonRecoverableUpper(6), nonCriticalLower(7), criticalLower(8), nonRecoverableLower(9), failed(10) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.12.1.5"
+name = "cooling_device_status"
+
+# 风扇转速 coolingDeviceReading
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.12.1.6"
+name = "cooling_rpm"
+
+# 风扇位置名称 coolingDeviceLocationName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.12.1.8"
+name = "cooling_location_name"
+is_tag = true
+
+# 温度探针条目表 temperatureProbeTableEntry
+[[instances.table]]
+name = "dell"
+# temperatureProbechassisIndex, temperatureProbeIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 温度探针状态设置 temperatureProbeStateSettings
+#  StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.20.1.4"
+name = "temperature_probe_state"
+is_tag = true
+
+# 温度探针状态 temperatureProbeStatus
+# StatusProbeEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCriticalUpper(4), criticalUpper(5), 
+# nonRecoverableUpper(6), nonCriticalLower(7), criticalLower(8),
+# nonRecoverableLower(9), failed(10) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.20.1.5"
+name = "temperature_probe_status"
+
+# 温度值 temperatureProbeReading 单位十分之一温度
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.20.1.6"
+name = "temperature_value"
+
+# 温度告警高阈值 temperatureProbeUpperCriticalThreshold 单位十分之一温度
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.20.1.10"
+name = "temperature_threshold"
+
+# 温度探针名称 temperatureProbeLocationName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.700.20.1.8"
+name = "temperature_probe_name"
+is_tag = true
+
+# CPU条目表 processorDeviceTableEntry
+[[instances.table]]
+name = "dell"
+# processorDevicechassisIndex, processorDeviceIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# CPU状态设置 processorDeviceStateSettings
+# StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.30.1.5"
+name = "cpu_state"
+is_tag = true
+
+# CPU状态 processorDeviceStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.30.1.5"
+name = "cpu_status"
+
+# CPU最大频率 processorDeviceMaximumSpeed 单位 MHz
+# Unsigned32BitRange (INTEGER) (0..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.30.1.11"
+name = "cpu_max_speed"
+is_tag = true
+
+# CPU当前频率 processorDeviceCurrentSpeed 单位 MHz
+# Unsigned32BitRange (INTEGER) (0..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.30.1.12"
+name = "cpu_current_speed"
+is_tag = true
+
+# 电压 processorDeviceVoltage 单位 毫伏
+# Signed32BitRange (INTEGER) (-2147483647.2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.30.1.14"
+name = "cpu_voltage"
+is_tag = true
+
+# CPU核心数 processorDeviceCoreCount 
+# Unsigned32BitRange (INTEGER) (0..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.30.1.17"
+name = "cpu_core_count"
+is_tag = true
+
+# CPU线程数 processorDeviceThreadCount
+# Unsigned32BitRange (INTEGER) (0..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.30.1.19"
+name = "cpu_thread_count"
+is_tag = true
+
+# CPU卡槽位置 processorDeviceFQDD
+# FQDDString (OCTET STRING) (SIZE (0..512))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.30.1.26"
+name = "cpu_fqdd"
+is_tag = true
+
+# CPU状态信息读取 processorDeviceStatusReading
+# ProcessorDeviceStatusReadingFlags (INTEGER) 
+# {internalError(1), thermalTrip(2), configurationError(32), processorPresent(128), processorDisabled(256), terminatorPresent(512), processorThrottled(1024) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.32.1.6"
+name = "cpu_status_info"
+
+# 内存条目表 memoryDeviceTableEntry
+[[instances.table]]
+name = "dell"
+# memoryDevicechassisIndex, memoryDeviceIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 内存状态 memoryDeviceStateSettings
+# StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.4"
+name = "mem_state"
+is_tag = true
+
+# 内存状态 memoryDeviceStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.5"
+name = "mem_status"
+
+# 内存类型 memoryDeviceType
+# MemoryDeviceTypeEnum (INTEGER) 
+# {deviceTypeIsOther(1), deviceTypeIsUnknown(2), deviceTypeIsDRAM(3), deviceTypeIsEDRAM(4), deviceTypeIsVRAM(5), 
+# deviceTypeIsSRAM(6), deviceTypeIsRAM(7), deviceTypeIsROM(8), deviceTypeIsFLASH(9), deviceTypeIsEEPROM(10), 
+# deviceTypeIsFEPROM(11), deviceTypeIsEPROM(12), deviceTypeIsCDRAM(13), deviceTypeIs3DRAM(14), deviceTypeIsSDRAM(15),
+# deviceTypeIsSGRAM(16), deviceTypeIsRDRAM(17), deviceTypeIsDDR(18), deviceTypeIsDDR2(19), deviceTypeIsDDR2FBDIMM(20), 
+# deviceTypeIsDDR3(24), deviceTypeIsFBD2(25), deviceTypeIsDDR4(26) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.7"
+name = "mem_type"
+is_tag = true
+
+# 内存槽位全称 memoryDeviceFQDD
+# String64 (OCTET STRING) (SIZE (0..64))
+# DIMM.Socket.A1
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.26"
+name = "mem_fqdd"
+is_tag = true
+
+# 内存大小 memoryDeviceSize
+# Unsigned32BitRange (INTEGER) (0..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.14"
+name = "mem_size"
+is_tag = true
+
+# 内存频率 memoryDeviceSpeed 单位 MHz
+# Unsigned32BitRange (INTEGER) (0..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.15"
+name = "mem_speed"
+is_tag = true
+
+# 内存当前频率 memoryDeviceCurrentOperatingSpeed 单位 MHz
+# Unsigned32BitRange (INTEGER) (0..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.15"
+name = "mem_current_speed"
+is_tag = true
+
+# 内存品牌 memoryDeviceManufacturerName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.21"
+name = "mem_brand"
+is_tag = true
+
+# 内存序列号 memoryDeviceSerialNumberName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.50.1.23"
+name = "mem_sn"
+is_tag = true
+
+# FRU可更换硬件条目表 fruTableEntry
+[[instances.table]]
+name = "dell"
+# fruChassisIndex, fruIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# FRU的状态 fruInformationStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.2000.10.1.3"
+name = "fru_status"
+
+# 组件品牌 fruManufacturerName
+# OCTET STRING (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.2000.10.1.6"
+name = "fru_brand"
+is_tag = true
+
+# 组件序列号 fruSerialNumberName
+# OCTET STRING (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.2000.10.1.7"
+name = "fru_sn"
+is_tag = true
+
+# 组件全称 fruFQDD
+# FQDDString (OCTET STRING) (SIZE (0..512))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.2000.10.1.12"
+name = "fru_fqdd"
+is_tag = true
+
+# PCI设备表条目 pCIDeviceTableEntry
+[[instances.table]]
+name = "dell"
+# pCIDevicechassisIndex, pCIDeviceIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# PCI设备是否启动 pCIDeviceStateSettings
+# StateSettingsFlags (INTEGER) 
+# {unknown(1), enabled(2), notReady(4), enabledAndNotReady(6)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.80.1.4"
+name = "pci_device_state"
+is_tag = true
+
+# PCI设备的健康状态 pCIDeviceStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.80.1.5"
+name = "pci_device_status"
+
+# PCI设备的品牌 pCIDeviceManufacturerName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.80.1.8"
+name = "pci_device_brand"
+is_tag = true
+
+# PCI设备信息描述 pCIDeviceDescriptionName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.80.1.9"
+name = "pci_device_desc"
+is_tag = true
+
+# PCI设备FQDD pCIDeviceFQDD
+# FQDDString (OCTET STRING) (SIZE (0..512))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.80.1.12"
+name = "pci_device_fqdd"
+is_tag = true
+
+# 网络设备条目表 networkDeviceTableEntry
+[[instances.table]]
+name = "dell"
+# networkDeviceChassisIndex, networkDeviceIndex
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 网络设备健康状态 networkDeviceStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.90.1.3"
+name = "network_status"
+
+# 网络设备连接状态 networkDeviceConnectionStatus
+# NetworkDeviceConnectionStatusEnum (INTEGER) 
+# {connected(1), disconnected(2), driverBad(3), driverDisabled(4), hardwareInitalizing(10), 
+# hardwareResetting(11), hardwareClosing(12), hardwareNotReady(13) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.90.1.4"
+name = "network_conn_status"
+is_tag = true
+
+# 网络设备品牌 networkDeviceVendorName
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.90.1.7"
+name = "network_vendor_name"
+is_tag = true
+
+# 网络设备当前Mac地址 networkDeviceCurrentMACAddress
+# String64 (OCTET STRING) (SIZE (0..64))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.90.1.15"
+name = "network_current_mac"
+conversion = "hwaddr"
+is_tag = true
+
+# 网络设备永久Mac地址 networkDevicePermanentMACAddress
+# MACAddress (OCTET STRING) (SIZE (6))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.90.1.16"
+name = "network_permanent_mac"
+conversion = "hwaddr"
+is_tag = true
+
+# 网络设备FQDD networkDeviceFQDD
+# MACAddress (OCTET STRING) (SIZE (6))
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.4.1100.90.1.30"
+name = "network_fqdd"
+is_tag = true
+
+# 控制器条目表 controllerTableEntry
+[[instances.table]]
+name = "dell"
+# controllerNumber
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 存储管理控制器名称 controllerName
+# DISPLAYSTRING
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.2"
+name = "contr_name"
+is_tag = true
+
+# 控制器综合状态 controllerRollUpStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.37"
+name = "contr_rollup_status"
+
+# 控制器本身状态 controllerComponentStatus
+# ObjectStatusEnum (INTEGER) 
+# {other(1), unknown(2), ok(3), nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.38"
+name = "contr_comp_status"
+
+# 控制器缓存大小 controllerCacheSizeInMB 单位 MB
+# INTEGER (1..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.9"
+name = "contr_cache_size"
+
+# 控制器加密模式 controllerSecurityStatus
+# INTEGER {unknown(1),none(2),lkm(3)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.72"
+name = "contr_security_status"
+
+# 控制器I/O负载模式 controllerLoadBalanceSetting
+# INTEGER {other(1),unsupported(2),auto(3),none(4)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.75"
+name = "contr_balance_mode"
+
+# 控制器最大速度 controllerMaxCapSpeed
+# INTEGER {unknown(1),oneDotFiveGbps(2),threeGbps(3),sixGbps(4),twelveGbps(5)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.76"
+name = "contr_max_speed"
+
+# 控制器显示名称 controllerDisplayName
+# DISPLAYSTRING
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.79"
+name = "contr_display_name"
+is_tag = true
+
+# 控制器固件版本 controllerFWVersion
+# DISPLAYSTRING
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.8"
+name = "contr_fw_version"
+is_tag = true
+
+# 控制器驱动版本 controllerDriverVersion
+# DISPLAYSTRING
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.41"
+name = "contr_driver_version"
+is_tag = true
+
+# 控制器资源用于在需要重建失败磁盘时进行重建的百分比 controllerRebuildRate
+# INTEGER (0..100)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.7"
+name = "contr_rebuild_rate"
+
+# 在添加物理磁盘或更改存储在磁盘组上的虚拟磁盘的RAID级别后重建的百分比 controllerReconstructRate
+# INTEGER (0..100)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.48"
+name = "contr_reson_rate"
+
+# 参与虚拟磁盘或热备份的磁盘执行巡逻读取的百分比 controllerPatrolReadRate
+# INTEGER (0..100)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.49"
+name = "contr_patrol_rate"
+
+# 创建冗余虚拟磁盘后执行背景初始化的百分比 controllerBGIRate
+# INTEGER (0..100)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.50"
+name = "contr_bgi_rate"
+
+# 冗余虚拟磁盘执行检查一致性的百分比 controllerCheckConsistencyRate
+# INTEGER (0..100)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.1.1.51"
+name = "contr_check_rate"
+
+# Raid条目表 virtualDiskTableEntry
+[[instances.table]]
+name = "dell"
+# virtualDiskNumber
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# Raid 状态 virtualDiskState
+# INTEGER {unknown(1),online(2),failed(3),degraded(4)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.4"
+name = "virtual_disk_status"
+
+# Raid 磁盘大小 virtualDiskSizeInMB 单位 MB
+# INTEGER (1..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.6"
+name = "virtual_disk_size"
+
+# Raid 类型 virtualDiskLayout
+# INTEGER {other(1),r0(2),r1(3),r5(4),r6(5),r10(6),r50(7),r60(8),concatRaid1(9),concatRaid5(10)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.13"
+name = "virtual_disk_layout"
+is_tag = true
+
+# Raid 磁盘的条带大小 virtualDiskStripeSize
+#  INTEGER {other(1),default(2),fiveHundredAndTwelvebytes(3),oneKilobytes(4),
+# twoKilobytes(5),fourKilobytes(6),eightKilobytes(7),sixteenKilobytes(8),thirtyTwoKilobytes(9),
+# sixtyFourKilobytes(10),oneTwentyEightKilobytes(11),twoFiftySixKilobytes(12),
+# fiveOneTwoKilobytes(13),oneMegabye(14),twoMegabytes(15),fourMegabytes(16),
+# eightMegabytes(17),sixteenMegabytes(18)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.14"
+name = "virtual_disk_stripe"
+is_tag = true
+
+# Raid 协议 virtualDiskAvailableProtocols
+# DISPLAYSTRING SAS SATA
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.32"
+name = "virtual_disk_proto"
+is_tag = true
+
+# Raid 磁盘类型 virtualDiskMediaType
+# DISPLAYSTRING HDD SSD
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.33"
+name = "virtual_disk_type"
+is_tag = true
+
+# Raid 磁盘显示名称 virtualDiskDisplayName
+# DISPLAYSTRING
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.36"
+name = "virtual_disk_display"
+is_tag = true
+
+# Raid 磁盘FQDD virtualDiskFQDD
+# DISPLAYSTRING
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.140.1.1.35"
+name = "virtual_disk_fqdd"
+is_tag = true
+
+# 物理磁盘状态虚拟表 physicalDiskTableEntry
+[[instances.table]]
+name = "dell"
+# physicalDiskNumber
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 物理磁盘的状态 physicalDiskState
+# INTEGER
+# {unknown(1),ready(2),online(3),foreign(4),offline(5),
+# blocked(6),failed(7),nonraid(8),removed(9),readonly(10)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.4"
+name = "physical_disk_status"
+
+# 物理磁盘本身的状态 不考虑任何包含的组件状态的传播 physicalDiskComponentStatus
+# ObjectStatusEnum (INTEGER) {other(1), unknown(2), ok(3), 
+# nonCritical(4), critical(5), nonRecoverable(6) }
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.24"
+name = "physical_disk_self_status"
+
+# 磁盘名称 physicalDiskName
+# DISPLAYSTRING 
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.2"
+name = "physical_disk_name"
+is_tag = true
+
+# 磁盘热备状态 physicalDiskSpareState
+# INTEGER {notASpare(1),dedicatedHotSpare(2),globalHotSpare(3)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.21"
+name = "physical_disk_spare"
+is_tag = true
+
+# 预测故障警报 physicalDiskSmartAlertIndication
+# BooleanType (INTEGER) (0..1)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.31"
+name = "physical_disk_smart_alert"
+is_tag = true
+
+# 物理磁盘的电源状态 physicalDiskPowerState
+# INTEGER {other(1),spunUp(2),spunDown(3),transition(4),on(5)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.42"
+name = "physical_disk_power_state"
+
+# SSD的磨损百分比 physicalDiskRemainingRatedWriteEndurance
+# INTEGER (0..255) 0～100 无效255
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.49"
+name = "physical_disk_remain_rate"
+is_tag = true
+
+# 物理磁盘正在进行时的操作 physicalDiskOperationalState
+# INTEGER {notApplicable(1),rebuild(2),clear(3),copyback(4)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.50"
+name = "physical_disk_oper_state"
+is_tag = true
+
+# 正在物理磁盘上执行的操作的进度百分比 physicalDiskProgress
+#  INTEGER (0..100)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.51"
+name = "physical_disk_progress"
+is_tag = true
+
+# 物理磁盘的安全/加密状态 physicalDiskSecurityStatus
+# INTEGER {supported(1),notSupported(2),secured(3),locked(4),foreign(5)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.52"
+name = "physical_disk_sec_status"
+is_tag = true
+
+# 物理磁盘信息虚拟表 physicalDiskTableEntry
+[[instances.table]]
+name = "dell"
+# physicalDiskNumber
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 磁盘名称 physicalDiskName
+# DISPLAYSTRING 
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.2"
+name = "physical_disk_name"
+is_tag = true
+
+# 磁盘品牌 physicalDiskManufacturer
+# DISPLAYSTRING 
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.3"
+name = "physical_disk_brand"
+is_tag = true
+
+# 磁盘序列号 physicalDiskSerialNo
+# DISPLAYSTRING 
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.7"
+name = "physical_disk_serialnum"
+is_tag = true
+
+# 磁盘产品ID physicalDiskProductID
+# DISPLAYSTRING 
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.6"
+name = "physical_disk_productid"
+is_tag = true
+
+# 磁盘固件版本 physicalDiskRevision
+# DISPLAYSTRING 
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.8"
+name = "physical_disk_revision"
+is_tag = true
+
+# 物理磁盘的总线类型 physicalDiskBusType
+# INTEGER {unknown(1),scsi(2),sas(3),sata(4),fibre(5),pcie(6),nvme(7)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.21"
+name = "physical_disk_bus_type"
+
+# 物理磁盘类型 physicalDiskMediaType
+# INTEGER {unknown(1),hdd(2),ssd(3)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.35"
+name = "physical_disk_media_type"
+is_tag = true
+
+# 物理磁盘的尺寸形状 physicalDiskFormFactor
+# INTEGER {unknown(1),oneDotEight(2),twoDotFive(3),threeDotFive(4),edsffe1DotL(5)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.53"
+name = "physical_disk_form_factor"
+is_tag = true
+
+# 物理磁盘是否支持T10 PI physicalDiskT10PICapability
+# INTEGER {other(1),capable(2),notCapable(3)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.57"
+name = "physical_disk_picap"
+is_tag = true
+
+# 物理磁盘的块大小（以字节为单位）这不适用于NVMe设备 physicalDiskBlockSizeInBytes
+# INTEGER (1..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.58"
+name = "physical_disk_blocksize"
+is_tag = true
+
+# 仅适用于NVMe设备 设备支持的NVMe协议版本 physicalDiskProtocolVersion
+# DISPLAYSTRING
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.59"
+name = "physical_disk_proto_version"
+is_tag = true
+
+# 物理磁盘速率虚拟表 physicalDiskTableEntry
+[[instances.table]]
+name = "dell"
+# physicalDiskNumber
+index_as_tag = true
+inherit_tags = ["dell_idrac_shortname", "dell_service_tag"]
+
+# 磁盘名称 physicalDiskName
+# DISPLAYSTRING 
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.2"
+name = "physical_disk_name"
+is_tag = true
+
+# 磁盘大小 physicalDiskCapacityInMB
+# INTEGER (1..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.11"
+name = "physical_disk_capacity"
+is_tag = true
+
+# 磁盘使用大小 physicalDiskUsedSpaceInMB
+# INTEGER (1..2147483647)
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.17"
+name = "physical_disk_usage"
+
+# 磁盘启动时协商速度 physicalDiskNegotiatedSpeed
+# INTEGER {unknown(1),oneDotFiveGbps(2),threeGbps(3),sixGbps(4),twelveGbps(5),fiveGTps(6),
+# eightGTps(7),sixteenGTps(8),thirtytwoGTps(9)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.29"
+name = "physical_disk_neg_speed"
+is_tag = true
+
+# 磁盘支持的最大数据传输速度 physicalDiskCapableSpeed 单位为每秒千兆比特（Gbps）
+# 1:The speed could not be determined.2. 1.5 Gbps3:3.0 Gbps4:6.0 Gbps5:12.0 Gbps
+# 6:5 GT/s (applicable for NVMe devices).
+# 7:8 GT/s (applicable for NVMe devices).
+# 8:16 GT/s (applicable for NVMe devices).
+# 9:32 GT/s (applicable for NVMe devices).
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.30"
+name = "physical_disk_cap_speed"
+is_tag = true
+
+# 物理磁盘类型 physicalDiskMediaType
+# INTEGER {unknown(1),hdd(2),ssd(3)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.35"
+name = "physical_disk_media_type"
+is_tag = true
+
+# 仅适用于NVMe设备 设备支持的NVMe协议版本 physicalDiskProtocolVersion
+# DISPLAYSTRING
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.59"
+name = "physical_disk_proto_version"
+is_tag = true
+
+# 仅适用于NVMe设备 设备初始化期间与主机协商的PCIe链接宽度 physicalDiskPCIeNegotiatedLinkWidth
+# INTEGER {other(1),notApplicable(2),byOne(3),byTwp(4),
+# byFour(5),byEight(6),bySixteen(7),byThirtyTwp(8)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.60"
+name = "physical_disk_pcie_nego"
+is_tag = true
+
+# 仅适用于NVMe设备 设备能够支持的PCIe链路宽度 physicalDiskPCIeCapableLinkWidth
+# INTEGER {other(1),notApplicable(2),byOne(3),byTwp(4),
+# byFour(5),byEight(6),bySixteen(7),byThirtyTwp(8)}
+[[instances.table.field]]
+oid = ".1.3.6.1.4.1.674.10892.5.5.1.20.130.4.1.61"
+name = "physical_disk_pcie_capa"
+is_tag = true
